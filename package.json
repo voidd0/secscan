@@ -1,0 +1,53 @@
+{
+  "name": "@v0idd0/secscan",
+  "version": "1.0.0",
+  "description": "secscan — find accidentally-committed credentials in any source tree. Detects GitHub PATs, AWS keys, Stripe / OpenAI / Anthropic / Slack / Google / SendGrid tokens, JWTs, PEM private keys. Zero deps, redacts by default. Free forever from vøiddo.",
+  "main": "src/scanner.js",
+  "bin": {
+    "secscan": "./bin/secscan.js"
+  },
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "secret-scanner",
+    "credential-scanner",
+    "security",
+    "leak-detection",
+    "pre-commit",
+    "ci",
+    "secrets",
+    "github-pat",
+    "aws-keys",
+    "cli",
+    "devtools",
+    "voiddo"
+  ],
+  "author": "vøiddo <support@voiddo.com> (https://voiddo.com)",
+  "license": "MIT",
+  "homepage": "https://tools.voiddo.com/secscan/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voidd0/secscan.git"
+  },
+  "bugs": {
+    "url": "https://github.com/voidd0/secscan/issues",
+    "email": "support@voiddo.com"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://voiddo.com/contact/"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE"
+  ]
+}
