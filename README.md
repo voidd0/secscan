@@ -1,5 +1,10 @@
 # secscan
 
+[![npm version](https://img.shields.io/npm/v/@v0idd0/secscan.svg?color=A0573A)](https://www.npmjs.com/package/@v0idd0/secscan)
+[![npm downloads](https://img.shields.io/npm/dw/@v0idd0/secscan.svg?color=1F1A14)](https://www.npmjs.com/package/@v0idd0/secscan)
+[![License: MIT](https://img.shields.io/badge/license-MIT-A0573A.svg)](LICENSE)
+[![Node ≥14](https://img.shields.io/badge/node-%E2%89%A514-1F1A14)](package.json)
+
 Find accidentally-committed credentials in any source tree. Zero deps, fast, redacts by default.
 
 ```
@@ -11,6 +16,10 @@ $ secscan
 
 2 findings (2 critical)
 ```
+
+## Why secscan
+
+You're about to commit. Your `.env.example` was supposed to have placeholders. Three minutes ago, in a hurry, you copy-pasted real values to test something and forgot to redact. The classic Friday-evening leak. secscan is a pre-commit guard that catches the high-confidence patterns (PATs, AWS keys, OpenAI keys, PEM blocks) and refuses the commit before the leak hits a remote.
 
 ## Install
 
@@ -64,6 +73,27 @@ Patterns are tuned for high precision — we'd rather miss a weird custom format
 
 By default: `.git`, `node_modules`, `dist`, `build`, `.venv`, `venv`, `.next`, `.nuxt`, `.svelte-kit`, `coverage`, `.cache`, `.idea`, `.vscode`, `target`, `.gradle`, `.mvn`. Binary files (PNG/JPG/PDF/ZIP/MP3/etc.) are skipped automatically. Files larger than 5 MB are skipped (set a smaller limit by piping individual files).
 
+## Compared to alternatives
+
+| tool | install | precision (false positives) | speed on 1M LOC | runs offline |
+|---|---|---|---|---|
+| secscan | one npm install | high (curated patterns) | <2s | yes |
+| `gitleaks` | go binary or docker | medium-high | seconds | yes |
+| `trufflehog` | go binary | high (active verifier) | minutes (does HTTP) | partial |
+| GitHub secret scanning | GitHub-only | very high (vendor partners) | server-side | no |
+
+If you operate at scale and want active credential verification (does this stripe key still work?), `trufflehog` is the right pick. For a fast pre-commit / pre-push gate that just needs to refuse obvious leaks, secscan is faster typing and faster running.
+
+## FAQ
+
+**Will it catch a custom-format API key our backend issues?** Probably not — we don't pattern-match on entropy alone (too many false positives). If you want your custom format covered, send a PR with a regex and a test fixture.
+
+**Why redact by default?** Because the typical use case is "scan and tell me if there's a problem", not "show me the secret". When you need the secret to investigate (which char position got pasted?), `--no-redact` exists; we just don't make it the default.
+
+**False positive on `sk-...` short strings?** OpenAI key pattern is `^sk-` plus a known suffix substring (`T3BlbkFJ`) plus a length range. Short `sk-` strings (`sk-test_…` examples in test fixtures) don't match.
+
+**Pre-commit hook?** See the snippet below.
+
 ## Pre-commit usage
 
 ```bash
@@ -89,9 +119,13 @@ for (const f of findings) {
 }
 ```
 
+## More from the studio
+
+This is one tool out of many — see [`from-the-studio.md`](from-the-studio.md) for the full lineup of vøiddo products (other CLI tools, browser extensions, the studio's flagship products and games).
+
 ## License
 
-MIT — part of the [vøiddo](https://voiddo.com) tools collection.
+MIT.
 
 ---
 
