@@ -1,6 +1,6 @@
 {
   "name": "@v0idd0/secscan",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "secscan — find accidentally-committed credentials in any source tree. Detects GitHub PATs, AWS keys, Stripe / OpenAI / Anthropic / Slack / Google / SendGrid tokens, JWTs, PEM private keys. Zero deps, redacts by default. Free forever from vøiddo.",
   "main": "src/scanner.js",
   "bin": {
@@ -45,9 +45,14 @@
     "node": ">=14"
   },
   "files": [
-    "bin",
-    "src",
-    "README.md",
-    "LICENSE"
+    "bin/",
+    "src/",
+    "LICENSE",
+    "README.md"
+  ],
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
   ]
 }
